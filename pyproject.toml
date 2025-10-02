@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "filebrowser-downloader"
+version = "0.1.0"
+description = "A simple Python utility to download files or entire folders recursively from Filebrowser shares."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+
+authors = [
+  { name = "Aleks Krnjaic" }
+]
+
+keywords = ["filebrowser", "downloader", "files", "folders"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+
+[project.urls]
+Homepage = "https://github.com/alek5k/filebrowser-downloader"
+Repository = "https://github.com/alek5k/filebrowser-downloader"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools]
+include-package-data = true
