@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "filebrowser-downloader"
-version = "0.1.0"
+version = "0.1.1"
 description = "A simple Python utility to download files or entire folders recursively from Filebrowser shares."
 readme = "README.md"
 requires-python = ">=3.9"
