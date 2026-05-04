@@ -9,7 +9,7 @@ from dataclasses import dataclass, field
 
 
 @dataclass
-class FBContext:
+class DownloaderContext:
     base_url: str
     share_id: str
     password: Optional[str] = None
@@ -21,7 +21,7 @@ class FBContext:
 def make_context(base_url: str,
                  password: Optional[str] = None,
                  verbose: bool = True,
-                 raise_on_error: bool = False) -> FBContext:
+                 raise_on_error: bool = False) -> DownloaderContext:
     """
     Initialize a downloader context from a Filebrowser share URL.
     """
@@ -29,10 +29,10 @@ def make_context(base_url: str,
         raise ValueError("Invalid Filebrowser share URL (missing /share/).")
 
     base, share_id = base_url.split("/share/", 1)
-    return FBContext(base, share_id, password, verbose, raise_on_error)
+    return DownloaderContext(base, share_id, password, verbose, raise_on_error)
 
 
-def fetch_metadata(ctx: FBContext, extra_path: Optional[str] = "") -> dict:
+def fetch_metadata(ctx: DownloaderContext, extra_path: Optional[str] = "") -> dict:
     """
     Fetch metadata from Filebrowser API.
     """
@@ -75,7 +75,7 @@ def fetch_metadata(ctx: FBContext, extra_path: Optional[str] = "") -> dict:
     return {}
 
 
-def download_file(ctx: FBContext, meta: dict, dest: Path, abort_if_exists: bool = True) -> Path:
+def download_file(ctx: DownloaderContext, meta: dict, dest: Path, abort_if_exists: bool = True) -> Path:
     filename = Path(meta["name"]).name
     filepath = dest / filename
 
@@ -129,7 +129,7 @@ def download_file(ctx: FBContext, meta: dict, dest: Path, abort_if_exists: bool 
             raise RuntimeError(f"Download failed: {e}")
 
 
-def download_folder(ctx: FBContext, meta: dict, dest: Path, abort_if_exists: bool = True):
+def download_folder(ctx: DownloaderContext, meta: dict, dest: Path, abort_if_exists: bool = True):
     folder_path = dest / Path(meta["name"]).name
 
     if ctx.verbose and not folder_path.exists():
