@@ -154,6 +154,7 @@ def upload(
     raise_on_error: bool = False,
     username: Optional[str] = None,
     password: Optional[str] = None,
+    remote_filename: Optional[str] = None,
 ) -> str:
     """
     Upload a file using Filebrowser's TUS endpoint.
@@ -162,6 +163,7 @@ def upload(
     - base_url: Filebrowser host root. Example: https://filebrowser.example.com
     - local_file: Local file path to upload.
     - remote_folder: Destination folder relative to Filebrowser root.
+    - remote_filename: Optional remote filename. If None, uses the local filename.
     - auth_token: Token used in the X-Auth header. If omitted, username/password login is used.
     - cookie_token: Optional token used in Cookie: auth=<token>.
     - override: Whether to overwrite an existing remote file.
@@ -179,6 +181,8 @@ def upload(
         raise ValueError("chunk_size must be a positive integer.")
     if not tus_version.strip():
         raise ValueError("tus_version must be a non-empty string.")
+    if remote_filename is not None and not remote_filename.strip():
+        raise ValueError("remote_filename must be a non-empty string when provided.")
 
     base = _normalize_base_url(base_url)
     resolved_auth_token = auth_token
@@ -211,7 +215,8 @@ def upload(
             return ""
 
     folder = _normalize_remote_folder(remote_folder)
-    filename = quote(file_path.name)
+    selected_filename = file_path.name if remote_filename is None else remote_filename.strip()
+    filename = quote(selected_filename, safe="")
 
     remote_path = f"{folder}/{filename}" if folder else filename
     upload_url = f"{base}/api/tus/{remote_path}"

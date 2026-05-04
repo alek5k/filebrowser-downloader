@@ -61,6 +61,7 @@ upload(
     base_url="https://yourhost",
     local_file="path/to/file.bin",
     remote_folder="my/remote/folder",
+    remote_filename="renamed-on-server.bin",  # omit/None to keep local filename
     username="your_username",
     password="your_password",  # omit to prompt interactively
     override=True,
@@ -69,5 +70,5 @@ upload(
 
 Notes:
 - `remote_folder` is appended to `/api/tus/<remote_folder>/<filename>`.
+- `remote_filename` overrides the remote file name; if `None`, `local_file`'s filename is used.
 - `override` controls whether remote file is overwritten or kept.
-
