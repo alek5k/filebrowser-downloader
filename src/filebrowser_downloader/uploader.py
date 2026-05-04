@@ -147,7 +147,7 @@ def upload(
     remote_folder: Optional[str] = None,
     auth_token: Optional[str] = None,
     cookie_token: Optional[str] = None,
-    override: bool = False,
+    override: bool = True,
     chunk_size: int = 8 * 1024 * 1024,
     tus_version: str = "1.0.0",
     verbose: bool = True,

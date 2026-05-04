@@ -1,6 +1,6 @@
 # Filebrowser Downloader
 
-A simple Python utility to download **files or entire folders recursively** from a [Filebrowser](https://github.com/filebrowser/filebrowser/) public share URL.  
+A simple Python utility to download files or folders from a [Filebrowser](https://github.com/filebrowser/filebrowser/) public share URL.  
 
 Supports:
 
@@ -9,7 +9,9 @@ Supports:
 ✅ Progress display for file downloads  
 ✅ Skipping already downloaded files (with size check)  
 ✅ Partial file cleanup on error  
-✅ Configurable verbosity and error handling  
+✅ Configurable verbosity and error handling
+
+Although primarily intended as a downloader, this utility also **supports file uploads** using username and password auth.
 
 ---
 
@@ -32,12 +34,13 @@ from filebrowser_downloader import download
 download("https://yourhost/share/abc123")
 
 # Download a folder (recursively) into path/to/folder
-download("https://yourhost/share/def456", password="secret", destination_folder="path/to/folder")
+download(
+    base_url="https://yourhost/share/def456", 
+    password="secret", 
+    destination_folder="path/to/folder"
+)
 ```
-
----
-
-## Usage Parameters
+Parameters:
 
 - **base_url**: The public share URL (`https://host/share/<share_id>`).  
 - **password**: Password if the share is protected. If `None` and required, the user is prompted interactively.  
@@ -49,16 +52,22 @@ download("https://yourhost/share/def456", password="secret", destination_folder=
 
 ---
 
-## Example Output
+## Upload Usage
 
-```
-🔗 Starting download for share: https://yourhost/share/abc123
-⬇️  Downloading hello.txt: 0% complete
-⬇️  Downloading hello.txt: 100% complete
-✅ File saved: downloads/hello.txt
+```python
+from filebrowser_downloader import upload
 
-🔗 Starting download for share: https://yourhost/share/def456
-📁 Creating folder: downloads/def456
-⬇️  Downloading data.csv: 100% complete
-✅ File saved: downloads/def456/data.csv
+upload(
+    base_url="https://yourhost",
+    local_file="path/to/file.bin",
+    remote_folder="my/remote/folder",
+    username="your_username",
+    password="your_password",  # omit to prompt interactively
+    override=True,
+)
 ```
+
+Notes:
+- `remote_folder` is appended to `/api/tus/<remote_folder>/<filename>`.
+- `override` controls whether remote file is overwritten or kept.
+
